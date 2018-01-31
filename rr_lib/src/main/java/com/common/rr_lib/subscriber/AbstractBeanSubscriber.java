@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 /**
  * Created by muhanxi on 18/1/29.
  */
-public abstract class AbstractSubscriber<T> implements Subscriber<String> {
+public abstract class AbstractBeanSubscriber<T> implements Subscriber<String> {
 
     private static final String DEFAULT = "default" ;
 
@@ -34,11 +34,11 @@ public abstract class AbstractSubscriber<T> implements Subscriber<String> {
     private Class mBeanClass ;
 
 
-    public AbstractSubscriber(){
+    public AbstractBeanSubscriber(){
         this(DEFAULT);
     }
 
-    public AbstractSubscriber(String tag){
+    public AbstractBeanSubscriber(String tag){
         try {
             this.mTag = tag;
             Type genType = getClass().getGenericSuperclass();

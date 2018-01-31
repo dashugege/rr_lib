@@ -28,13 +28,13 @@ public final class RetrofitUtils {
 
 
 
-    private final boolean mDebug ;
+    private final boolean log ;
     private final Context mContext;
     private final HashMap<String,String> mHeaderMap ;
     private final String mBaseurl;
 
-    private RetrofitUtils(boolean debug,HashMap<String,String> header,Context context,String baseurl){
-        this.mDebug = debug;
+    private RetrofitUtils(boolean log,HashMap<String,String> header,Context context,String baseurl){
+        this.log = log;
         this.mContext = context;
         this.mHeaderMap = header;
         this.mBaseurl = baseurl;
@@ -87,8 +87,6 @@ public final class RetrofitUtils {
         }
 
         CommonUtils.subscribe(create().get(url),subscriber);
-
-
     }
 
 
@@ -109,7 +107,7 @@ public final class RetrofitUtils {
 
     public static final class Builder {
 
-        private boolean isDebug = false ;
+        private boolean log = false ;
         private HashMap<String,String> headerMap = null ;
         private Context context ;
         private String baseurl;
@@ -118,8 +116,8 @@ public final class RetrofitUtils {
         public Builder(){
         }
 
-        public Builder debug(boolean debug){
-            this.isDebug = debug;
+        public Builder addLog(boolean log){
+            this.log = log;
             return this;
         }
 
@@ -146,7 +144,7 @@ public final class RetrofitUtils {
                 throw  new NullPointerException("you must set baseurl");
             }
 
-            return new RetrofitUtils(isDebug,headerMap,context,baseurl);
+            return new RetrofitUtils(log,headerMap,context,baseurl);
         }
 
 
