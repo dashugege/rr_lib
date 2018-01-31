@@ -1,5 +1,6 @@
 package com.common.rr_lib.subscriber;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -11,6 +12,7 @@ import java.lang.reflect.Type;
 
 /**
  * Created by muhanxi on 18/1/29.
+ * 返回值是json 直接解析成bean对象
  */
 public abstract class AbstractBeanSubscriber<T> implements Subscriber<String> {
 
@@ -66,17 +68,16 @@ public abstract class AbstractBeanSubscriber<T> implements Subscriber<String> {
 
         try {
             System.out.println("receive data = " + result);
-            T t = (T) new Gson().fromJson(result,mBeanClass);
+            T t = (T) JSONObject.parseObject(result,mBeanClass);
             onResponse(mTag,t);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
+            onErrorResponse(1);
         }catch (Exception e){
             e.printStackTrace();
         }finally {
             cancel();
         }
-
-
     }
 
     @Override
