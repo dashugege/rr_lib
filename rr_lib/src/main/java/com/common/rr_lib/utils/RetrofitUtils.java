@@ -23,7 +23,7 @@ public final class RetrofitUtils {
 
     private volatile static Retrofit INSTANCE = null;
 
-    private static APIService apiService ;
+    protected static APIService apiService ;
 
 
 
@@ -46,7 +46,7 @@ public final class RetrofitUtils {
 
 
 
-    private Retrofit getInstance(Context context){
+    public  Retrofit getInstance(Context context){
         if(INSTANCE == null){
             synchronized (RetrofitUtils.class){
                 if (INSTANCE == null){
@@ -56,51 +56,12 @@ public final class RetrofitUtils {
                             .addConverterFactory(ScalarsConverterFactory.create())
                             .client(new OkHttpUtils(mHeaderMap).getInstance(context))
                             .build();
+                    apiService = CommonUtils.create(INSTANCE,APIService.class);
                 }
             }
         }
         return INSTANCE ;
     };
-
-
-
-
-    private static APIService create(){
-        if(INSTANCE == null){
-            throw  new NullPointerException("you first create RetrofitUtils.Builder");
-        }
-        if(apiService == null){
-            apiService = INSTANCE.create(APIService.class) ;
-        }
-       return apiService ;
-    }
-
-
-
-
-
-
-
-    public static void get(String url,Subscriber<String> subscriber) {
-        if(TextUtils.isEmpty(url)){
-            throw new NullPointerException("parameter error");
-        }
-
-        CommonUtils.subscribe(create().get(url),subscriber);
-    }
-
-
-    public static void post(String url, Map<String,String> map , Subscriber<String> subscriber) {
-        if(TextUtils.isEmpty(url) || map == null ){
-            throw new NullPointerException("url or parameter is null");
-        }
-
-        CommonUtils.subscribe(create().post(url,map),subscriber);
-
-    }
-
-
-
 
 
 

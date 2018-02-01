@@ -3,7 +3,6 @@ package com.common.rr_lib.subscriber;
 import com.alibaba.fastjson.JSONObject;
 import com.common.rr_lib.exception.IFactoryException;
 import com.common.rr_lib.exception.IHttpException;
-import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
 import org.reactivestreams.Subscriber;
@@ -16,37 +15,33 @@ import java.lang.reflect.Type;
  * Created by muhanxi on 18/1/29.
  * 返回值是json 直接解析成bean对象
  */
-public abstract class AbstractBeanSubscriber<T>  implements Subscriber<String> {
+public abstract class AbstractStringSubscriber implements Subscriber<String> {
 
+    private static final String DEFAULT = "default" ;
 
     /**
      * 成功回调
      * @param tag  请求标记
      * @param t    请求结果
      */
-    protected abstract void onResponse(String tag , T t);
+    protected abstract void onResponse(String tag , String t);
+
+    /**
+     * 请求失败回调
+     * @param code 失败编码
+     */
     protected abstract void onErrorResponse(int code);
 
-
-    private Class mBeanClass ;
     private String mTag = null;
-    private static final String DEFAULT = "default" ;
     private Subscription mSubscription ;
 
 
-    public AbstractBeanSubscriber(){
+    public AbstractStringSubscriber(){
         this(DEFAULT);
     }
 
-    public AbstractBeanSubscriber(String tag){
-        try {
-            this.mTag = tag;
-            Type genType = getClass().getGenericSuperclass();
-            Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-            mBeanClass  = (Class) params[0];
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public AbstractStringSubscriber(String tag){
+        this.mTag = tag;
     }
 
 
@@ -61,11 +56,9 @@ public abstract class AbstractBeanSubscriber<T>  implements Subscriber<String> {
 
     @Override
     public void onNext(String result) {
-
         try {
             System.out.println("receive data = " + result);
-            T t = (T) JSONObject.parseObject(result,mBeanClass);
-            onResponse(mTag,t);
+            onResponse(mTag,result);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
             IHttpException exception =  IFactoryException.createException(e);
