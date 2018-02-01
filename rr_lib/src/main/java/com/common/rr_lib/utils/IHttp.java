@@ -2,6 +2,7 @@ package com.common.rr_lib.utils;
 
 import android.text.TextUtils;
 
+import com.common.rr_lib.download.IDownloadListener;
 import com.common.rr_lib.subscriber.AbstractBeanSubscriber;
 import com.common.rr_lib.subscriber.AbstractStringSubscriber;
 import com.common.rr_lib.utils.CommonUtils;
@@ -13,11 +14,16 @@ import java.util.Map;
 
 /**
  * Created by muhanxi on 18/2/1.
+ *
  */
 public class IHttp {
 
 
-
+    /**
+     * get 请求
+     * @param url
+     * @param subscriber
+     */
     public static void get(String url,Subscriber<String> subscriber) {
         if(RetrofitUtils.apiService == null){
             throw new NullPointerException("you must init RetrofitUtils.Builder");
@@ -29,7 +35,12 @@ public class IHttp {
     }
 
 
-
+    /**
+     * get 请求  带标记
+     * @param tag
+     * @param url
+     * @param subscriber
+     */
     public static void get(String tag,String url,Subscriber<String> subscriber) {
         if(RetrofitUtils.apiService == null){
             throw new NullPointerException("you must init RetrofitUtils.Builder");
@@ -52,6 +63,12 @@ public class IHttp {
     }
 
 
+    /**
+     * post
+     * @param url
+     * @param map
+     * @param subscriber
+     */
     public static void post(String url, Map<String,String> map , Subscriber<String> subscriber) {
 
         if(RetrofitUtils.apiService == null){
@@ -67,6 +84,13 @@ public class IHttp {
     }
 
 
+    /**
+     * post 请求  带tag
+     * @param tag
+     * @param url
+     * @param map
+     * @param subscriber
+     */
     public static void post(String tag,String url, Map<String,String> map , Subscriber<String> subscriber) {
 
         if(RetrofitUtils.apiService == null){
@@ -93,5 +117,19 @@ public class IHttp {
         CommonUtils.subscribe(RetrofitUtils.apiService.post(url,map),subscriber);
 
     }
+
+
+
+
+    public static void downloadFile(String url, IDownloadListener listener){
+
+
+
+
+
+    }
+
+
+
 
 }

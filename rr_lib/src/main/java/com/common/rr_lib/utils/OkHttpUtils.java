@@ -19,8 +19,6 @@ class OkHttpUtils {
     private final HashMap<String,String> mHeaderMap ;
     OkHttpUtils(HashMap<String,String> header){
         this.mHeaderMap = header;
-
-
     }
 
     private volatile static OkHttpClient INSTANCE = null ;
