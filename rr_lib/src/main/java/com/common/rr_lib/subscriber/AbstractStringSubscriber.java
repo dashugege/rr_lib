@@ -1,5 +1,7 @@
 package com.common.rr_lib.subscriber;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSONObject;
 import com.common.rr_lib.exception.IFactoryException;
 import com.common.rr_lib.exception.IHttpException;
@@ -17,7 +19,7 @@ import java.lang.reflect.Type;
  */
 public abstract class AbstractStringSubscriber implements Subscriber<String> {
 
-    private static final String DEFAULT = "default" ;
+    private static  String MTAG = "default" ;
 
     /**
      * 成功回调
@@ -32,17 +34,12 @@ public abstract class AbstractStringSubscriber implements Subscriber<String> {
      */
     protected abstract void onErrorResponse(int code);
 
-    private String mTag = null;
     private Subscription mSubscription ;
 
 
     public AbstractStringSubscriber(){
-        this(DEFAULT);
     }
 
-    public AbstractStringSubscriber(String tag){
-        this.mTag = tag;
-    }
 
 
 
@@ -57,8 +54,7 @@ public abstract class AbstractStringSubscriber implements Subscriber<String> {
     @Override
     public void onNext(String result) {
         try {
-            System.out.println("receive data = " + result);
-            onResponse(mTag,result);
+            onResponse(MTAG,result);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
             IHttpException exception =  IFactoryException.createException(e);
@@ -92,6 +88,12 @@ public abstract class AbstractStringSubscriber implements Subscriber<String> {
         mSubscription = null ;
     }
 
+
+    public void setTag(String tag){
+        if(!TextUtils.isEmpty(tag)){
+            MTAG = tag ;
+        }
+    }
 
 
 }

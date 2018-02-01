@@ -1,5 +1,9 @@
 package com.common.rr_lib;
 
+import com.common.rr_lib.subscriber.AbstractStringSubscriber;
+import com.common.rr_lib.utils.IHttp;
+import com.common.rr_lib.utils.RetrofitUtils;
+
 /**
  * Created by muhanxi on 18/1/29.
  */
@@ -21,6 +25,43 @@ public class Test {
 
 
 
+
+//        RetrofitUtils builder =  new RetrofitUtils.Builder()
+//                .addLog(true)
+//                .baseurl("http://qhb.2dyt.com/")
+//                .context(this)
+//                .build();
+//
+//         返回结果是字符串
+//
+//        IHttp.get("ToDay/register", new AbstractStringSubscriber() {
+//            @Override
+//            protected void onResponse(String tag, String t) {
+//                System.out.println("tag = " + tag);
+//                System.out.println("t = " + t);
+//            }
+//
+//            @Override
+//            protected void onErrorResponse(int code) {
+//
+//            }
+//        });
+//
+
+//        返回结果是bean 对象
+//        IHttp.get("ToDay/register", new AbstractBeanSubscriber<RegisterBean>() {
+//
+//            @Override
+//            protected void onResponse(String tag, RegisterBean registerBean) {
+//                System.out.println("tag c = " + tag);
+//                System.out.println("t = " + registerBean.toString());
+//            }
+//
+//            @Override
+//            protected void onErrorResponse(int code) {
+//
+//            }
+//        });
 
 
 

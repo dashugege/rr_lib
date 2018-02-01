@@ -64,9 +64,6 @@ public class PersistentCookieStore {
             }
             cookies.get(url.host()).put(name, cookie);
         } else {
-//            if (cookies.containsKey(url.host())) {
-//                cookies.get(url.host()).remove(name);
-//            }
             if(!cookies.containsKey(url.host())){
                 ConcurrentHashMap<String,Cookie> map =  new ConcurrentHashMap<String, Cookie>() ;
                 map.put(name,cookie);
