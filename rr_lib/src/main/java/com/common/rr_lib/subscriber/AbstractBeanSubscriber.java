@@ -1,6 +1,8 @@
 package com.common.rr_lib.subscriber;
 
 import com.alibaba.fastjson.JSONObject;
+import com.common.rr_lib.exception.IFactoryException;
+import com.common.rr_lib.exception.IHttpException;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -72,7 +74,8 @@ public abstract class AbstractBeanSubscriber<T> implements Subscriber<String> {
             onResponse(mTag,t);
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
-            onErrorResponse(1);
+            IHttpException exception =  IFactoryException.createException(e);
+            onErrorResponse(exception.getCode());
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -83,7 +86,8 @@ public abstract class AbstractBeanSubscriber<T> implements Subscriber<String> {
     @Override
     public void onError(Throwable t) {
         System.out.println("onError t = " + t.getMessage());
-        onErrorResponse(1);
+        IHttpException exception =  IFactoryException.createException(t);
+        onErrorResponse(exception.getCode());
         cancel();
     }
 
