@@ -8,7 +8,7 @@ public class Constant {
     /**
      * release true false is debug
      */
-    public static final Boolean DEBUG = false ;
+    public static final Boolean DEBUG = true ;
 
 
 

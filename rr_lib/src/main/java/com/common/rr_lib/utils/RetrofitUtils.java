@@ -46,7 +46,7 @@ public final class RetrofitUtils {
 
 
 
-    public  Retrofit getInstance(Context context){
+    Retrofit getInstance(Context context){
         if(INSTANCE == null){
             synchronized (RetrofitUtils.class){
                 if (INSTANCE == null){
@@ -64,6 +64,14 @@ public final class RetrofitUtils {
     };
 
 
+    public static APIService get(){
+
+        if(INSTANCE == null){
+            throw new NullPointerException("you must init RetrofitUtils.Builder");
+        }
+        Retrofit dRetrofit =  INSTANCE.newBuilder().addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
+        return  CommonUtils.create(dRetrofit,APIService.class);
+    }
 
 
     public static final class Builder {

@@ -34,6 +34,7 @@ class OkHttpUtils {
                             .connectTimeout(20,TimeUnit.SECONDS)
                             .cookieJar(new CookiesManager(context))
                             .addInterceptor(new LoggingInterceptor())
+                            .followRedirects(true)
 //                            .socketFactory(SSLSocket.createSSLSocketFactory())
 //                            .hostnameVerifier(new TrustAllHostnameVerifier())
                             .build();
@@ -46,6 +47,8 @@ class OkHttpUtils {
         }
         return INSTANCE ;
     }
+
+
 
 
 

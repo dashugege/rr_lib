@@ -2,15 +2,22 @@ package com.common.rr_lib.utils;
 
 import android.text.TextUtils;
 
-import com.common.rr_lib.download.IDownloadListener;
+import com.common.rr_lib.retry.RetryWithDelay;
 import com.common.rr_lib.subscriber.AbstractBeanSubscriber;
+import com.common.rr_lib.subscriber.AbstractProgressSubscriber;
 import com.common.rr_lib.subscriber.AbstractStringSubscriber;
 import com.common.rr_lib.utils.CommonUtils;
 import com.common.rr_lib.utils.RetrofitUtils;
 
 import org.reactivestreams.Subscriber;
 
+import java.io.InputStream;
 import java.util.Map;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 
 /**
  * Created by muhanxi on 18/2/1.
@@ -121,12 +128,18 @@ public class IHttp {
 
 
 
-    public static void downloadFile(String url, IDownloadListener listener){
-
-
-
-
-
+    public static void downloadFile(String url, Subscriber<InputStream> subscriber){
+        RetrofitUtils.get().download(url)
+                .subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io())
+                .map(new Function<ResponseBody, InputStream>() {
+                    @Override
+                    public InputStream apply(ResponseBody responseBody) throws Exception {
+                        return responseBody.byteStream();
+                    }
+                })
+                .observeOn(Schedulers.computation())
+                .subscribe(subscriber);
     }
 
 
