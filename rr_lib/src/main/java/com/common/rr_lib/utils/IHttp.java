@@ -2,6 +2,7 @@ package com.common.rr_lib.utils;
 
 import android.text.TextUtils;
 
+import com.common.rr_lib.APIService;
 import com.common.rr_lib.retry.RetryWithDelay;
 import com.common.rr_lib.subscriber.AbstractBeanSubscriber;
 import com.common.rr_lib.subscriber.AbstractProgressSubscriber;
@@ -10,7 +11,9 @@ import com.common.rr_lib.utils.CommonUtils;
 import com.common.rr_lib.utils.RetrofitUtils;
 
 import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
@@ -18,6 +21,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /**
  * Created by muhanxi on 18/2/1.
@@ -127,19 +133,23 @@ public class IHttp {
 
 
 
+    public static void downloadFile(String baseurl , String url, String path ,Subscriber<ResponseBody> subscriber){
 
-    public static void downloadFile(String url, Subscriber<InputStream> subscriber){
-        RetrofitUtils.get().download(url)
-                .subscribeOn(Schedulers.io())
-                .unsubscribeOn(Schedulers.io())
-                .map(new Function<ResponseBody, InputStream>() {
-                    @Override
-                    public InputStream apply(ResponseBody responseBody) throws Exception {
-                        return responseBody.byteStream();
-                    }
-                })
-                .observeOn(Schedulers.computation())
-                .subscribe(subscriber);
+        try {
+            if(subscriber instanceof AbstractProgressSubscriber){
+                AbstractProgressSubscriber progressSubscriber = (AbstractProgressSubscriber)subscriber ;
+                String [] arrUrl = url.split("\\/");
+                progressSubscriber.setFileName(arrUrl[arrUrl.length-1]);
+                progressSubscriber.setmPath(path);
+            }
+            RetrofitUtils.get(baseurl)
+                    .downloadFile(url)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(Schedulers.computation())
+                    .subscribe(subscriber);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

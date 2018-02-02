@@ -48,7 +48,7 @@ public interface APIService {
      */
     @Streaming
     @GET
-    Flowable<ResponseBody> download(@Url String url);
+    Flowable<ResponseBody> downloadFile(@Url String url);
 
 
 }

@@ -64,13 +64,15 @@ public final class RetrofitUtils {
     };
 
 
-    public static APIService get(){
-
+    public static APIService get(String baseurl){
         if(INSTANCE == null){
-            throw new NullPointerException("you must init RetrofitUtils.Builder");
+            throw new NullPointerException("you must init context");
         }
-        Retrofit dRetrofit =  INSTANCE.newBuilder().addCallAdapterFactory(RxJava2CallAdapterFactory.create()).build();
-        return  CommonUtils.create(dRetrofit,APIService.class);
+        INSTANCE = INSTANCE.newBuilder()
+                .baseUrl(baseurl)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+        return  CommonUtils.create(INSTANCE,APIService.class);
     }
 
 
